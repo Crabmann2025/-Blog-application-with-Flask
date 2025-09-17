@@ -4,35 +4,31 @@ import os
 
 app = Flask(__name__)
 
-# Pfad zur JSON-Datei
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 POSTS_FILE = os.path.join(BASE_DIR, "posts.json")
 
-
-# Blog-Beiträge laden
+# Load blog posts
 def load_posts():
     if os.path.exists(POSTS_FILE):
         with open(POSTS_FILE, "r") as file:
             return json.load(file)
     return []
 
-
-# Blog-Beiträge speichern
+# Save blog posts
 def save_posts(posts):
     with open(POSTS_FILE, "w") as file:
         json.dump(posts, file, indent=4)
 
-
+# Index route (home page)
 @app.route('/')
 def index():
     blog_posts = load_posts()
     return render_template('index.html', posts=blog_posts)
 
-
+# Add new post
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     blog_posts = load_posts()
-
     if request.method == 'POST':
         author = request.form.get("author")
         title = request.form.get("title")
@@ -49,11 +45,17 @@ def add():
 
         blog_posts.append(new_post)
         save_posts(blog_posts)
-
         return redirect(url_for('index'))
 
     return render_template('add.html')
 
+# Delete a post
+@app.route('/delete/<int:post_id>')
+def delete(post_id):
+    blog_posts = load_posts()
+    blog_posts = [post for post in blog_posts if post["id"] != post_id]
+    save_posts(blog_posts)
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
