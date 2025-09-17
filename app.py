@@ -48,7 +48,8 @@ def add():
             "id": new_id,
             "author": author,
             "title": title,
-            "content": content
+            "content": content,
+            "likes": 0  # Neues Feld für Likes
         }
 
         blog_posts.append(new_post)
@@ -74,15 +75,26 @@ def update(post_id):
         return "Post not found", 404
 
     if request.method == 'POST':
-        # Update the post details
         post['author'] = request.form.get("author")
         post['title'] = request.form.get("title")
         post['content'] = request.form.get("content")
         save_posts(blog_posts)
         return redirect(url_for('index'))
 
-    # GET request: show update form
     return render_template('update.html', post=post)
+
+# Like a post
+@app.route('/like/<int:post_id>')
+def like(post_id):
+    blog_posts = load_posts()
+    # Direkt die Liste durchgehen und das passende Post-Dictionary ändern
+    for post in blog_posts:
+        if post["id"] == post_id:
+            post["likes"] = post.get("likes", 0) + 1
+            break
+    save_posts(blog_posts)
+    return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
