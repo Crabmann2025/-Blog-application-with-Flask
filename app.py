@@ -19,7 +19,15 @@ def save_posts(posts):
     with open(POSTS_FILE, "w") as file:
         json.dump(posts, file, indent=4)
 
-# Index route (home page)
+# Helper: fetch a single post by ID
+def fetch_post_by_id(post_id):
+    posts = load_posts()
+    for post in posts:
+        if post["id"] == post_id:
+            return post
+    return None
+
+# Index route
 @app.route('/')
 def index():
     blog_posts = load_posts()
@@ -56,6 +64,25 @@ def delete(post_id):
     blog_posts = [post for post in blog_posts if post["id"] != post_id]
     save_posts(blog_posts)
     return redirect(url_for('index'))
+
+# Update a post
+@app.route('/update/<int:post_id>', methods=['GET', 'POST'])
+def update(post_id):
+    blog_posts = load_posts()
+    post = fetch_post_by_id(post_id)
+    if post is None:
+        return "Post not found", 404
+
+    if request.method == 'POST':
+        # Update the post details
+        post['author'] = request.form.get("author")
+        post['title'] = request.form.get("title")
+        post['content'] = request.form.get("content")
+        save_posts(blog_posts)
+        return redirect(url_for('index'))
+
+    # GET request: show update form
+    return render_template('update.html', post=post)
 
 if __name__ == '__main__':
     app.run(debug=True)
