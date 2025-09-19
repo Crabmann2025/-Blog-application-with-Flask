@@ -1,3 +1,4 @@
+/* Body and general text styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #F5F5F5;
@@ -5,28 +6,79 @@ body {
     color: #333;
 }
 
+/* Main heading */
 h1 {
     text-align: center;
     color: #4F4F4F;
 }
 
+/* Blog post container */
 .post {
     background-color: #FFF;
     border: 1px solid #DDD;
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* subtle shadow for depth */
 }
 
+/* Post title */
 .post h2 {
     margin-top: 0;
+    color: #2C3E50; /* slightly darker for headings */
 }
 
+/* Paragraphs inside posts */
 .post p {
     margin: 10px 0;
+    line-height: 1.5;
 }
 
+/* Links */
 a {
     text-decoration: none;
     color: #0066CC;
+}
+
+/* Flash message container */
+.flashes {
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+}
+
+/* Individual flash messages */
+.flash {
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Flash categories */
+.flash.success {
+    background-color: #DFF2BF;
+    color: #4F8A10;
+    border: 1px solid #4F8A10;
+}
+
+.flash.danger {
+    background-color: #FFBABA;
+    color: #D8000C;
+    border: 1px solid #D8000C;
+}
+
+/* Buttons inside forms (Delete / Like) */
+button {
+    background-color: #0066CC;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+button:hover {
+    background-color: #0055AA;
 }
